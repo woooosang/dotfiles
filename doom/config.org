@@ -1,0 +1,422 @@
+#+title: Doom Emacs Config
+#+date:<2022-07-31 Sun>
+#+author: Paul Kang
+#+PROPERTY: header-args:emacs-lisp :tangle ./config.el
+
+* Guidelines
++ =load!= for loading external *.el files relative to this one
++ =use-package!= for configuring packages
++ =after!= for running code after a package has loaded
++ =add-load-path!= for adding directories to the =load-path=, relative to
+  this file. Emacs searches the =load-path= when you load packages with
+  =require= or =use-package=.
++ =map!= for binding new keys
+
+* Basic
+** Personal Information
+#+begin_src emacs-lisp
+
+(setq user-full-name "Woosang Kang"
+      user-mail-address "loiter97@gmail.com")
+
+#+end_src
+
+** Auto-tangle Configuration Files
+#+begin_src emacs-lisp
+
+;; Automatically tangle this config.org file on save
+(defun efs/org-babel-tangle-config ()
+  (when (string-equal (buffer-file-name)
+                      (expand-file-name "~/.config/doom/config.org"))
+    (let ((org-confirm-babel-evaluate nil))
+      (org-babel-tangle))))
+
+;; Add anon. func as org mode hook, which then adds after-save-hook for current buffer
+(add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'efs/org-babel-tangle-config)))
+(message "complete")
+#+end_src
+
+#+RESULTS:
+: complete
+
+** Line Number & General Indentation
+#+begin_src emacs-lisp
+
+;; This determines the style of line numbers in effect. If set to `nil', line
+;; numbers are disabled. For relative line numbers, set this to `relative'.
+(setq display-line-numbers-type 'relative)
+
+;;; Prevent Extraneous Tabs
+;; (setq-default indent-tabs-mode nil)
+;; Maybe use tabs for some projects...
+(setq-default indent-tabs-mode t)
+(setq-default tab-width 4)
+
+#+end_src
+
+#+RESULTS:
+: 4
+
+* Aesthetics
+** Theme
+#+begin_src emacs-lisp
+
+(setq doom-theme 'doom-gruvbox)
+
+#+end_src
+
+#+RESULTS:
+: doom-gruvbox
+
+** Font
+#+begin_src emacs-lisp
+
+;; Use specific font for Korean charset.
+;; if you want to use different font size for specific charset,
+;; add :size POINT-SIZE in the font-spec.
+(set-fontset-font t 'hangul (font-spec :name "NanumGothicCoding"))
+
+(setq doom-font (font-spec :family "FiraCode Nerd Font Mono" :size 20))
+  		(unless (doom-font-exists-p doom-font)
+	 		(setq doom-font nil))
+(setq doom-big-font (font-spec :family "FiraCode Nerd Font Mono" :size 24))
+  		(unless (doom-font-exists-p doom-big-font)
+	 		(setq doom-big-font nil))
+(setq doom-variable-pitch-font (font-spec :family "FiraCode Nerd Font Mono" :size 20))
+  		(unless (doom-font-exists-p doom-variable-pitch-font)
+	 		(setq doom-variable-pitch-font nil))
+(custom-set-faces!
+  '(font-lock-comment-face :slant italic)
+  '(font-lock-keyword-face :slant italic))
+
+#+end_src
+
+#+RESULTS:
+| doom--customize-themes-h-75 | doom--customize-themes-h-76 |
+
+* Org-mode
+** Directory Configurations
+#+begin_src emacs-lisp
+
+;; If you use `org' and don't want your org files in the default location below,
+;; change `org-directory'. It must be set before org loads!
+(setq org-directory "~/org/")
+(setq org-agenda-files '("~/org" "~/org/roam"))
+
+#+end_src
+
+#+RESULTS:
+| ~/org | ~/org/muselive | ~/org/muselive/sprints | ~/org/roam |
+
+** Org-Babel Shortcuts
+#+begin_src emacs-lisp
+
+(require 'org-tempo)
+
+(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+(add-to-list 'org-structure-template-alist '("py" . "src python"))
+(add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+
+#+end_src
+
+* Buffers & Windows
+** Transpose Window Split
+#+begin_src emacs-lisp
+
+(defun toggle-window-split ()
+  (interactive)
+  (if (= (count-windows) 2)
+      (let* ((this-win-buffer (window-buffer))
+         (next-win-buffer (window-buffer (next-window)))
+         (this-win-edges (window-edges (selected-window)))
+         (next-win-edges (window-edges (next-window)))
+         (this-win-2nd (not (and (<= (car this-win-edges)
+                     (car next-win-edges))
+                     (<= (cadr this-win-edges)
+                     (cadr next-win-edges)))))
+         (splitter
+          (if (= (car this-win-edges)
+             (car (window-edges (next-window))))
+          'split-window-horizontally
+        'split-window-vertically)))
+    (delete-other-windows)
+    (let ((first-win (selected-window)))
+      (funcall splitter)
+      (if this-win-2nd (other-window 1))
+      (set-window-buffer (selected-window) this-win-buffer)
+      (set-window-buffer (next-window) next-win-buffer)
+      (select-window first-win)
+      (if this-win-2nd (other-window 1))))))
+
+(global-set-key (kbd "C-x |") 'toggle-window-split)
+
+#+end_src
+
+#+RESULTS:
+: toggle-window-split
+
+** Window Focusing & Centering
+#+begin_src emacs-lisp
+
+;; Dim panes not in focus
+(use-package! dimmer
+  :custom (dimmer-fraction 0.2)
+  :config (dimmer-mode))
+(use-package! centered-window)
+
+#+end_src
+
+** Remove titlebar
+#+begin_src emacs-lisp
+(setq default-frame-alist '((undecorated . t)))
+#+end_src
+
+* Language Settings
+** General
+#+begin_src emacs-lisp
+
+;; Set PATH
+(use-package exec-path-from-shell
+  :config
+  (dolist (var '("GOPATH"  "GOROOT" "PYTHONPATH" "CLASSPATH"))
+    (add-to-list 'exec-path-from-shell-variables var))
+  ;; (when (daemonp)
+  ;; (exec-path-from-shell-initialize)))
+    (exec-path-from-shell-initialize))
+
+;; Set lsp diagnostic lines
+(after! lsp-ui
+  (setq lsp-ui-sideline-diagnostic-max-lines 8))
+#+end_src
+
+#+RESULTS:
+: 8
+
+** Protobuf
+#+begin_src emacs-lisp
+(defconst my-protobuf-style
+  '((c-basic-offset . 4)
+        (indent-tabs-mode . nil)))
+
+(add-hook 'protobuf-mode-hook
+  (lambda () (c-add-style "my-style" my-protobuf-style t)))
+#+end_src
+
+#+RESULTS:
+| lambda | nil | (c-add-style my-style my-protobuf-style t) |
+
+** Go
+#+begin_src emacs-lisp
+(add-hook 'go-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook 'gofmt-before-save)
+            (setq tab-width 4)))
+
+(with-eval-after-load 'lsp-mode
+  (lsp-register-custom-settings
+    '(("gopls.completeUnimported" t t)
+      ("gopls.staticcheck" t t)
+      ("gopls.experimentalWorkspaceModule" t t))))
+(setq lsp-go-env '((GOFLAGS . "-tags=wireinject,tools")))
+
+(setq gofmt-command "goimports")
+(add-hook 'before-save-hook 'gofmt-before-save)
+
+#+end_src
+
+#+RESULTS:
+| undo-fu-session-save-safe | gofmt-before-save |
+
+** JS/TS
+#+begin_src emacs-lisp
+
+(setq js-indent-level 2)
+(setq js2-basic-offset 2)
+(setq typescript-indent-level 2)
+
+#+end_src
+
+** Shell
+#+begin_src emacs-lisp
+
+(setq sh-basic-offset 2)
+
+#+end_src
+
+** C++
+#+begin_src emacs-lisp
+
+(setq-default c-basic-offset 4)
+
+#+end_src
+
+* Projectile
+** Project Search
+#+begin_src emacs-lisp
+
+(setq projectile-project-search-path '("~/repositories/" ("~/repositories/muselive" . 1)))
+
+#+end_src
+
+** Root Discovery
+#+begin_src emacs-lisp
+
+(defcustom projectile-project-root-functions
+  '(projectile-root-local
+    projectile-root-top-down
+    projectile-root-bottom-up
+    projectile-root-top-down-recurring)
+  "A list of functions for finding project roots."
+  :group 'projectile
+  :type '(repeat function))
+
+#+end_src
+
+#+begin_src emacs-lisp
+
+;; Register directories with go.mod as a independent project
+(after! projectile
+  (projectile-register-project-type
+    'go
+    '("go.mod")
+    :project-file "go.mod")
+  (projectile-register-project-type
+    'java
+    '(".project")
+    :project-file ".project")
+)
+
+(message "complete")
+#+end_src
+
+#+RESULTS:
+: complete
+
+* Version Control
+** Blamer
+#+begin_src emacs-lisp
+
+(use-package! blamer
+  :bind (("s-i" . blamer-show-commit-info))
+  :defer 20
+  :custom
+  (blamer-idle-time 0.3)
+  (blamer-min-offset 35)
+  :custom-face
+  (blamer-face ((t :foreground "#7a88cf"
+                    :background nil
+                    :height 140
+                    :italic t)))
+  :config
+  (global-blamer-mode 1))
+
+;; Make commit message windows long enough to read
+(setq blamer-max-commit-message-length 80)
+
+#+end_src
+
+* ETC
+** File Listing
+#+begin_src emacs-lisp
+
+;; List directories first for ls-lisp
+(setq ls-lisp-dirs-first t)
+
+#+end_src
+
+** Terraform
+#+begin_src emacs-lisp
+
+(require 'company-terraform)
+(company-terraform-init)
+
+#+end_src
+
+** Forge (Github)
+#+begin_src emacs-lisp
+(setq auth-sources '("~/.authinfo"))
+;; (ghub-request "GET" "/user" nil
+;;               :forge 'github
+;;               :host "api.github.com"
+;;               :username "muse-paul"
+;;               :auth 'forge)
+(setq code-review-auth-login-marker 'forge)
+#+end_src
+
+#+RESULTS:
+: forge
+
+** LaTex
+#+begin_src emacs-lisp
+(setq org-preview-latex-default-process 'dvisvgm)
+(after! org (setq org-startup-with-latex-preview t))
+(add-hook 'org-mode-hook 'org-fragtog-mode)
+
+;; (setf (cadr (assoc "ChkTeX" TeX-command-list)) "chktex -v6 -n8 %s")
+(message "complete")
+#+end_src
+
+#+RESULTS:
+: complete
+
+** emacsclient
+#+begin_src emacs-lisp
+;; (add-to-list 'default-frame-alist '(fullscreen . fullboth))
+#+end_src
+
+** Dired
+#+begin_src emacs-lisp
+(setq dired-listing-switches "-al --group-directories-first")
+(when (eq system-type 'darwin)
+  (setq insert-directory-program "gls" dired-use-ls-dired t)
+  (setq insert-directory-program "/opt/homebrew/bin/gls"))
+
+(add-hook 'dired-mode-hook 'treemacs-icons-dired-mode)
+#+end_src
+
+#+RESULTS:
+| +dired-disable-gnu-ls-flags-maybe-h | doom--recentf-add-dired-directory-h | treemacs-icons-dired-mode | dired-omit-mode | diredfl-mode |
+
+** Treemacs
+#+begin_src emacs-lisp
+(setq doom-themes-treemacs-theme "doom-colors")
+#+end_src
+
+#+RESULTS:
+: doom-colors
+
+** Hugo - Static websites with Org files
+#+begin_src emacs-lisp
+(use-package ox-hugo
+  :ensure t   ;Auto-install the package from Melpa
+  :after ox)
+
+;; Populates only the EXPORT_FILE_NAME property in the inserted heading.
+(with-eval-after-load 'org-capture
+  (defun org-hugo-new-subtree-post-capture-template ()
+    "Returns `org-capture' template string for new Hugo post.
+See `org-capture-templates' for more information."
+    (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
+           (fname (org-hugo-slug title)))
+      (mapconcat #'identity
+                 `(
+                   ,(concat "* TODO " title)
+                   ":PROPERTIES:"
+                   ,(concat ":EXPORT_FILE_NAME: " fname)
+                   ":END:"
+                   "%?\n")          ;Place the cursor here finally
+                 "\n")))
+
+  (add-to-list 'org-capture-templates
+               '("h"                ;`org-capture' binding + h
+                 "Hugo post"
+                 entry
+                 ;; It is assumed that below file is present in `org-directory'
+                 ;; and that it has a "Blog Ideas" heading. It can even be a
+                 ;; symlink pointing to the actual location of all-posts.org!
+                 (file+olp "posts.org" "Posts")
+                 (function org-hugo-new-subtree-post-capture-template))))
+
+(setq org-log-done 'time)
+#+end_src
+

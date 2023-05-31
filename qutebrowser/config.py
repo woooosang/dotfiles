@@ -23,6 +23,10 @@ c.url.searchengines = \
          'y': 'https://www.youtube.com/results?search_query={}'}
 c.content.pdfjs = True
 
+# enter insert mode on load if input element is present
+c.input.insert_mode.auto_load = True
+c.input.insert_mode.leave_on_load = False
+
 # tabs
 c.tabs.title.format = '{current_title}'
 c.colors.tabs.selected.even.fg = "red"
@@ -50,6 +54,7 @@ config.bind("u", "scroll-page 0 -0.5")
 config.bind("d", "scroll-page 0 0.5")
 
 config.bind("tp", "open -p")
+config.bind('<Escape>', 'mode-leave ;; jseval -q document.activeElement.blur()', mode='insert')
 
 # Source: https://github.com/noctuid/dotfiles/blob/master/browsing/.config/qutebrowser/config.py
 # to get to login page (e.g. airport/hotel)

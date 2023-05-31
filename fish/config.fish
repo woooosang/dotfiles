@@ -5,6 +5,9 @@ alias la='exa -a --color=always --group-directories-first'  # all files and dirs
 alias ll='exa -l --color=always --icons --all --git --group-directories-first'  # long format
 alias lt='exa -aT --color=always --icons --group-directories-first' # tree listing
 
+# lazygit
+alias lg=lazygit
+
 # neovim
 alias vi='$HOME/Applications/nvim.appimage'
 alias emacs='emacsclient -t'

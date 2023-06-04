@@ -24,7 +24,7 @@ c.url.searchengines = \
 c.content.pdfjs = True
 
 # enter insert mode on load if input element is present
-c.input.insert_mode.auto_load = True
+c.input.insert_mode.auto_load = False
 c.input.insert_mode.leave_on_load = False
 
 # tabs

@@ -13,8 +13,6 @@ c.session.lazy_restore = True
 
 # get rid of the titlebar
 c.window.hide_decoration = True
-# c.colors.webpage.darkmode.enabled = True
-config.set("colors.webpage.darkmode.enabled", True)
 
 # search engine config
 c.url.searchengines = \
@@ -54,9 +52,14 @@ config.bind("u", "scroll-page 0 -0.5")
 config.bind("d", "scroll-page 0 0.5")
 
 config.bind("tp", "open -p")
-config.bind('<Escape>', 'mode-leave ;; jseval -q document.activeElement.blur()', mode='insert')
 
-# Source: https://github.com/noctuid/dotfiles/blob/master/browsing/.config/qutebrowser/config.py
 # to get to login page (e.g. airport/hotel)
+# source: https://github.com/noctuid/dotfiles/blob/master/browsing/.config/qutebrowser/config.py
 # ../../.local/share/qutebrowser/userscripts/open-default-gateway
 # config.bind("'z", ':spawn --userscript open-default-gateway')
+
+# prevent brief white flashes on page load
+# source: https://www.reddit.com/r/qutebrowser/comments/h7s27u/dark_mode_white_flashes/
+config.set('colors.webpage.preferred_color_scheme', 'dark')
+config.set('colors.webpage.bg', 'black')
+config.set('colors.webpage.darkmode.enabled', True)

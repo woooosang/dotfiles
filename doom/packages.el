@@ -75,6 +75,6 @@
 (package! company-terraform)
 (package! terraform-mode)
 (package! bazel)
-(package! org-fragtog)
+(package! org-fragtog :disable t)
 (package! ox-hugo)
 (package! treemacs-icons-dired)

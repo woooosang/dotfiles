@@ -9,7 +9,6 @@ curl
 dvipng
 efibootmgr
 emacs
-exa
 fd-find
 findutils
 fish

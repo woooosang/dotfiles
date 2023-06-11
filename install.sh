@@ -7,7 +7,7 @@ echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sou
 # Rust & Cargo
 curl https://sh.rustup.rs -sSf | sh
 cargo install --locked bat
-cargo install alacritty
+cargo install alacritty exa
 
 # Starship installation
 curl -sS https://starthip.rs/install.sh | sh

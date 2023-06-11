@@ -51,7 +51,6 @@ python3.11-venv
 qutebrowser
 ripgrep
 shellcheck
-slack-desktop
 spotify-client
 texlive-fonts-extra
 texlive-fonts-recommended
@@ -61,10 +60,8 @@ texlive-science
 thunderbird-locale-en
 tmux
 util-linux
-util-linux-extra
 vlc
 xcape
 yakuake
 zathura
 zlib1g-dev
-zoom

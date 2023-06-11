@@ -12,6 +12,13 @@ alias lg=lazygit
 alias vi='$HOME/Applications/nvim.appimage'
 alias emacs='emacsclient -t'
 
+# batcat
+alias b='bat'
+alias bathelp='bat --plain --language=help'
+function help
+    $argv --help 2>&1 | bathelp
+end
+
 # exports
 set fish_greeting
 set -gx EDITOR vi

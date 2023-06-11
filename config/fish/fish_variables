@@ -33,4 +33,4 @@ SETUVAR fish_pager_color_description:B3A06D\x1eyellow\x1e\x2di
 SETUVAR fish_pager_color_prefix:normal\x1e\x2d\x2dbold\x1e\x2d\x2dunderline
 SETUVAR fish_pager_color_progress:brwhite\x1e\x2d\x2dbackground\x3dcyan
 SETUVAR fish_pager_color_selected_background:\x2dr
-SETUVAR fish_user_paths:/home/woosang\x2ekang/\x2econfig/emacs/bin\x1e/home/woosang\x2ekang/go/bin\x1e/home/woosang\x2ekang/\x2ecargo/bin\x1e/usr/local/go/bin\x1e/home/wk/\x2elocal/bin\x1e/usr/local/bin/jdk\x2d17\x2e0\x2e7\x2b7/bin\x1e/home/wk/\x2eemacs\x2ed/bin\x1e/home/wk/\x2ecargo/bin\x1e/home/wk/Applications/\x1e/usr/local/bin
+SETUVAR fish_user_paths:/home/woosang\x2ekang/\x2eemacs\x2ed/bin\x1e/home/woosang\x2ekang/\x2elocal/bin\x1e/home/woosang\x2ekang/go/bin\x1e/home/woosang\x2ekang/\x2ecargo/bin\x1e/usr/local/go/bin\x1e/home/wk/\x2elocal/bin\x1e/usr/local/bin/jdk\x2d17\x2e0\x2e7\x2b7/bin\x1e/home/wk/\x2eemacs\x2ed/bin\x1e/home/wk/\x2ecargo/bin\x1e/home/wk/Applications/\x1e/usr/local/bin

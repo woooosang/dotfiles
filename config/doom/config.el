@@ -29,10 +29,10 @@
 ;; add :size POINT-SIZE in the font-spec.
 (set-fontset-font t 'hangul (font-spec :name "NanumGothicCoding"))
 
-(setq doom-font (font-spec :family "FiraCode Nerd Font Mono" :size 20))
+(setq doom-font (font-spec :family "FiraCode Nerd Font Mono" :size 22))
   		(unless (doom-font-exists-p doom-font)
 	 		(setq doom-font nil))
-(setq doom-big-font (font-spec :family "FiraCode Nerd Font Mono" :size 24))
+(setq doom-big-font (font-spec :family "FiraCode Nerd Font Mono" :size 30))
   		(unless (doom-font-exists-p doom-big-font)
 	 		(setq doom-big-font nil))
 (setq doom-variable-pitch-font (font-spec :family "FiraCode Nerd Font Mono" :size 20))
@@ -165,7 +165,7 @@
   :custom-face
   (blamer-face ((t :foreground "#7a88cf"
                     :background nil
-                    :height 140
+                    :height 90
                     :italic t)))
   :config
   (global-blamer-mode 1))
@@ -187,12 +187,13 @@
 ;;               :auth 'forge)
 (setq code-review-auth-login-marker 'forge)
 
+;; (require 'org)
 (setq org-preview-latex-default-process 'dvisvgm)
-(after! org (setq org-startup-with-latex-preview t))
-(add-hook 'org-mode-hook 'org-fragtog-mode)
+;; ;; (setq org-format-latex-options (plist-put org-format-latex-options :scale 1))
+(after! org (setq org-startup-with-latex-preview nil))
+;; (add-hook 'org-mode-hook 'org-fragtog-mode)
 
 ;; (setf (cadr (assoc "ChkTeX" TeX-command-list)) "chktex -v6 -n8 %s")
-(message "complete")
 
 ;; (add-to-list 'default-frame-alist '(fullscreen . fullboth))
 

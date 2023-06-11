@@ -351,9 +351,9 @@
 
 ** LaTex
 #+begin_src emacs-lisp
-(require 'org)
+;; (require 'org)
 (setq org-preview-latex-default-process 'dvisvgm)
-;; (setq org-format-latex-options (plist-put org-format-latex-options :scale 1))
+;; ;; (setq org-format-latex-options (plist-put org-format-latex-options :scale 1))
 (after! org (setq org-startup-with-latex-preview nil))
 ;; (add-hook 'org-mode-hook 'org-fragtog-mode)
 
@@ -361,7 +361,7 @@
 #+end_src
 
 #+RESULTS:
-| :foreground | default | :background | default | :scale | 1 | :html-foreground | Black | :html-background | Transparent | :html-scale | 1.0 | :matchers | (begin $1 $ $$ \( \[) |
+: t
 
 ** emacsclient
 #+begin_src emacs-lisp
@@ -424,3 +424,5 @@ See `org-capture-templates' for more information."
 (setq org-log-done 'time)
 #+end_src
 
+#+RESULTS:
+: time

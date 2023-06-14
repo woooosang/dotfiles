@@ -64,3 +64,4 @@ vim.cmd([[
   augroup END
 ]])
 
+vim.g.gitblame_ignored_filetypes = {'oil'}

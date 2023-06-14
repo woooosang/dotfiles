@@ -29,6 +29,7 @@ return require('packer').startup(function(use)
 	-- use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install",
 	--	setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, })
 	use 'tpope/vim-commentary'
+	use 'f-person/git-blame.nvim'
 	use 'jreybert/vimagit'
 
 	use { 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', cmd = 'MarkdownPreview' }

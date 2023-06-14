@@ -64,7 +64,7 @@
 (package! keychain-environment)
 (package! dimmer)
 (package! centered-window)
-(package! blamer)
+(package! blamer :disable t)
 (package! dirvish)
 (package! poetry)
 (package! groovy-mode)

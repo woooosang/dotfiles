@@ -308,7 +308,7 @@
                     :height 90
                     :italic t)))
   :config
-  (global-blamer-mode 1))
+  (global-blamer-mode nil))
 
 ;; Make commit message windows long enough to read
 (setq blamer-max-commit-message-length 80)

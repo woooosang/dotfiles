@@ -1,0 +1,69 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Basic vim settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set relativenumber
+set nowrap
+set encoding=UTF-8
+set colorcolumn=80
+set mouse=a
+set nobackup nowritebackup
+set visualbell
+set smartcase ignorecase
+" Hide unsaved buffer on opening a new file
+set hidden
+" Splitting behavior settings
+set splitbelow splitright
+" Command line completion settings; use <Tab>, <S-Tab> to browse
+set wildmenu
+set wildmode=longest:full,full
+" " Indentation settings (1 tab = 4 spaces)
+" set expandtab
+" set shiftwidth=4 tabstop=4 softtabstop=4
+" set autoindent
+" Enable join options provided by idea
+set ideajoin
+set commentary
+" Show a few lines of context around the cursor. Note that this makes the
+" text scroll if you mouse-click near the start or end of the window.
+set scrolloff=5
+" Do incremental searching.
+set incsearch
+" Don't use Ex mode, use Q for formatting.
+map Q gq
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin Settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Plug 'easymotion/vim-easymotion'
+Plug 'preservim/nerdtree'
+Plug 'tpope/vim-commentary'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Key Remaps & Functions
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let mapleader=" "
+
+" Terminal
+nnoremap <c-t> :action ActivateTerminalToolWindow<CR>
+nnoremap <leader>t :action Terminal.OpenInTerminal<CR>
+" Zen mode
+nnoremap <c-z> :action ToggleDistractionFreeMode<CR>
+" Debugging/refactoring
+map <leader>r <Action>(RenameElement)
+nnoremap <leader>=  :action ReformatCode<CR>
+nnoremap <leader>o :action OptimizeImports<CR>
+nnoremap <leader>r :action Refactorings.QuickListPopupAction<CR>
+nnoremap gE :action GotoPreviousError<CR>
+nnoremap ge :action GotoNextError<CR>
+" Navigation
+nnoremap gi :action GotoImplementation<CR>
+nnoremap gp :action GotToSuperMethod<CR>
+nnoremap <c-/> :action FindInPath<CR>
+nnoremap <c-a> :action GotoAction<CR>
+nnoremap <c-f> :action GotoFile<CR>
+nnoremap <c-s> :action FileStructurePopup<CR>
+nnoremap <leader>u :action FindUsages<CR>
+nnoremap <leader>, :NERDTree<CR>
+nnoremap <leader>cr :action RenameElement<cr>
+" Terminal
+nnoremap <leader>ot :action ActivateTerminalToolWindow<cr>

@@ -7,7 +7,7 @@
    '(:foreground default :background default :scale 3 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
      ("begin" "$1" "$" "$$" "\\(" "\\[")))
  '(package-selected-packages
-   '(mermaid-mode ob-mermaid ox-hugo editorconfig org-fragtog bazel terraform-mode protobuf-mode transpose-frame leetcode gorepl-mode exec-path-from-shell poetry jenkinsfile-mode org-pomodoro docker-tramp irony)))
+   '(ox-reveal edn mermaid-mode ob-mermaid ox-hugo editorconfig org-fragtog bazel terraform-mode protobuf-mode transpose-frame leetcode gorepl-mode exec-path-from-shell poetry jenkinsfile-mode org-pomodoro docker-tramp irony)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

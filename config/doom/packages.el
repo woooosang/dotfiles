@@ -78,3 +78,5 @@
 (package! org-fragtog :disable t)
 (package! ox-hugo)
 (package! treemacs-icons-dired)
+(package! jsonnet-mode)
+(package! ox-reveal)

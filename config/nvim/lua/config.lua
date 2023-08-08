@@ -65,3 +65,5 @@ vim.cmd([[
 ]])
 
 vim.g.gitblame_ignored_filetypes = {'oil'}
+
+vim.g.mkdp_theme = 'dark'

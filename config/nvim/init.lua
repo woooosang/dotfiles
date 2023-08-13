@@ -30,5 +30,15 @@ end)
 
 lsp.setup()
 
+-- Autocomplete config
+cmp.setup(
+	{
+		mapping = {
+			['<C-j>'] = cmp.mapping.select_next_item(cmp_select_opts),
+			['<C-k>'] = cmp.mapping.select_prev_item(cmp_select_opts),
+		}
+	}
+)
+
 require('lualine').setup()
 

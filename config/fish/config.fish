@@ -1,20 +1,19 @@
-# ls aliases
-alias l='exa --icons --no-user --color=always --group-directories-first'
-alias ls='exa -al --color=always --group-directories-first'
-alias la='exa -a --color=always --group-directories-first'  # all files and dirs
-alias ll='exa -l --color=always --icons --all --git --group-directories-first'  # long format
-alias lt='exa -aT --color=always --icons --group-directories-first' # tree listing
+# Aliases & convenience functions
+alias l='lsd --icon=always --color=always --group-directories-first'
+alias la='lsd -la --icon=always --color=always --group-directories-first'
+alias ll='lsd -l --icon=always --color=always --group-directories-first'
+alias lt='lsd -a --tree --depth 2 --icon=always --color=always --group-directories-first'
 
 # lazygit
 alias lg=lazygit
 
 # neovim
-alias vi='$HOME/Applications/nvim.appimage'
+alias vi=nvim
 alias emacs='emacsclient -t'
 
 # batcat
-alias b='bat'
-alias bathelp='bat --plain --language=help'
+alias b='bat --theme=gruvbox-light'
+alias bathelp='bat --plain --language=help --theme=gruvbox-light'
 function help
     $argv --help 2>&1 | bathelp
 end
@@ -24,10 +23,9 @@ set fish_greeting
 set -gx EDITOR vi
 set -gx VISUAL vi
 set XDG_CONFIG_HOME $HOME/.config
-set JAVA_HOME "/usr/bin/jdk-17.0.7+7"
 
 ### "bat" as manpager
-set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
+set -x MANPAGER "sh -c 'col -bx | bat --theme=gruvbox-light -l man -p'"
 
 function fish_user_key_bindings
   fish_default_key_bindings

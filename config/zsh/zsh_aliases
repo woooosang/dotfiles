@@ -1,0 +1,32 @@
+# ------------ ALIASES/CONVENIENCE FUNCTIONS ------------
+alias l='lsd --icon=always --color=always --group-directories-first'
+alias la='lsd -la --icon=always --color=always --group-directories-first'
+alias ll='lsd -l --icon=always --color=always --group-directories-first'
+alias lt='lsd -a --tree --depth 2 --icon=always --color=always --group-directories-first'
+
+alias lg=lazygit
+
+alias vi=nvim
+
+# alias b='bat --theme=gruvbox-light'
+# alias bathelp='bat --plain --language=help --theme=gruvbox-light'
+
+alias b='bat'
+alias bathelp='bat --plain --language=help'
+help() {
+    "$@" --help 2>&1 | bathelp
+}
+
+mkcd() {
+	mkdir -p "$1" && cd "$1"
+}
+
+# alias bt='bazel test --cache_test_results=no --runs_per_test=20'
+bt() {
+	local num_runs=$1; shift
+	local target=("$@")
+	bazel test \
+		--cache_test_results=no \
+		--runs_per_test="$num_runs" \
+		${target[*]}
+}

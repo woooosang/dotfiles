@@ -51,10 +51,17 @@ vim.opt.swapfile = false
 -- set termguicolors to enable highlight groups
 vim.opt.termguicolors = true
 
-require("catppuccin").setup({
-	transparent_background = true
+-- require("catppuccin").setup({
+-- 	transparent_background = true
+-- })
+-- vim.cmd("colorscheme catppuccin-latte")
+
+require("rose-pine").setup({
+	styles = {
+		transparency = true,
+	},
 })
-vim.cmd("colorscheme catppuccin")
+vim.cmd("colorscheme rose-pine-moon")
 
 -- Set the default indentation settings for C++ files
 vim.cmd([[
@@ -66,4 +73,27 @@ vim.cmd([[
 
 vim.g.gitblame_ignored_filetypes = {'oil'}
 
-vim.g.mkdp_theme = 'dark'
+vim.g.mkdp_theme = 'light'
+vim.g.mkdp_browser = '/snap/bin/firefox'
+vim.g.mkdp_echo_preview_url = 1
+
+vim.opt.clipboard:append { 'unnamedplus' }
+
+vim.opt.background = 'light'
+
+vim.g.org_agenda_files = { '~/org/index.org' }
+
+-- Setup an autocommand group for Python-specific settings
+vim.api.nvim_create_augroup('PythonSettings', { clear = true })
+vim.api.nvim_create_autocmd('FileType', {
+    group = 'PythonSettings',
+    pattern = 'python',
+    callback = function()
+        -- Set the textwidth to 80 characters for Python files
+        vim.opt_local.textwidth = 80
+        -- Set colorcolumn to draw a line at the 80 character mark
+        vim.opt_local.colorcolumn = '80'
+    end,
+})
+
+

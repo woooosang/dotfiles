@@ -25,10 +25,67 @@ lsp.on_attach(function(client, bufnr)
 	bind('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
 end)
 
+local function file_exists(file)
+  local f = io.open(file, "r")
+  if f then
+    f:close()
+    return true
+  else
+    return false
+  end
+end
+
 -- (Optional) Configure lua language server for neovim
 -- require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
+require('mason-lspconfig').setup({
+	handlers = {
+		lsp.default_setup,
+		pyright = function()
+			require('lspconfig').pyright.setup({
+				settings = {
+					python = {
+						pythonPath = '/home/woosangkang/.pyenv/shims/python3',
+					},
+				},
+			})
+		end,
+		gopls = function()
+		  local config = {
+			settings = {
+			  gopls = {
+				directoryFilters = {
+				  "-bazel-bin",
+				  "-bazel-out",
+				  "-bazel-testlogs",
+				  "-bazel-mypkg",
+				},
+			  },
+			},
+		  }
+
+		  local gopackagesdriver_path = './tools/gopackagesdriver.sh'
+		  if file_exists(gopackagesdriver_path) then
+			config.settings.gopls.env = {
+			  GOPACKAGESDRIVER = gopackagesdriver_path
+			}
+		  end
+		  require('lspconfig').gopls.setup(config)
+		end,
+	}
+})
 
 lsp.setup()
+
+require('nvim-treesitter.configs').setup {
+	ensure_installed = {
+		"bash",
+		"go",
+		"lua",
+		"python",
+	},
+	highlight = { enable = true },
+	indent = { enable = true }
+}
 
 -- Autocomplete config
 cmp.setup(
@@ -42,3 +99,4 @@ cmp.setup(
 
 require('lualine').setup()
 
+require('neogit').setup({})

@@ -43,9 +43,9 @@ require('mason-lspconfig').setup({
 		pyright = function()
 			require('lspconfig').pyright.setup({
 				settings = {
-					python = {
-						pythonPath = '/home/woosangkang/.pyenv/shims/python3',
-					},
+					-- python = {
+					-- 	pythonPath = '/home/woosangkang/.pyenv/shims/python3',
+					-- },
 				},
 			})
 		end,
@@ -98,5 +98,3 @@ cmp.setup(
 )
 
 require('lualine').setup()
-
-require('neogit').setup({})

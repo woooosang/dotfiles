@@ -28,8 +28,10 @@ return require('packer').startup(function(use)
 	}
 
 	-- Convenience plugins
-	 use({ 'iamcco/markdown-preview.nvim', run = 'cd app && npm install',
-		setup = function() vim.g.mkdp_filetypes = { 'markdown' } end, ft = { 'markdown' }, })
+	use({
+		"iamcco/markdown-preview.nvim",
+		run = function() vim.fn["mkdp#util#install"]() end,
+	})
 	use 'tpope/vim-commentary'
 	use 'f-person/git-blame.nvim'
 	use 'jreybert/vimagit'
@@ -53,36 +55,12 @@ return require('packer').startup(function(use)
 	-- File explorer (netrw substitute)
 	use {
 		'stevearc/oil.nvim',
+		commit = 'fcca212c',
 		config = function()
 			require("oil").setup({
-				columns = {
-					"permissions",
-					"type",
-					-- "icon",
-					"size",
-					"mtime",
-				},
-				view_options = {
-					sort = {
-					  -- sort order can be "asc" or "desc"
-					  -- see :help oil-columns to see which columns are sortable
-					  { "type", "asc" },
-					  { "name", "asc" },
-					},
-				}
+				default_file_explorer = true,
 			})
 		end
-	}
-
-	-- Magit-like experience in nvim
-	use {
-		'NeogitOrg/neogit', tag = 'v0.0.1',
-		requires = {
-			{ 'nvim-lua/plenary.nvim' },
-			{ 'sindrets/diffview.nvim' },
-			{ 'nvim-telescope/telescope.nvim' },
-		},
-		config = true,
 	}
 
 	use 'nvim-tree/nvim-web-devicons'

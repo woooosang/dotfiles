@@ -444,10 +444,12 @@ mods = "Shift"
 [scrolling]
 history = 5000
 
-[shell]
+[terminal.shell]
 program = "/usr/bin/zsh"
 
 [window]
 # decorations = "none"
 # dynamic_padding = false
 opacity = 0.9
+
+[terminal]

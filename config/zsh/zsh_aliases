@@ -6,8 +6,6 @@ alias lt='lsd -a --tree --depth 2 --icon=always --color=always --group-directori
 
 alias lg=lazygit
 
-alias vi=nvim
-
 # alias b='bat --theme=gruvbox-light'
 # alias bathelp='bat --plain --language=help --theme=gruvbox-light'
 

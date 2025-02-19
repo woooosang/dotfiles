@@ -21,12 +21,14 @@ mkcd() {
 	mkdir -p "$1" && cd "$1"
 }
 
-# alias bt='bazel test --cache_test_results=no --runs_per_test=20'
-bt() {
-	local num_runs=$1; shift
-	local target=("$@")
-	bazel test \
-		--cache_test_results=no \
-		--runs_per_test="$num_runs" \
-		${target[*]}
+function bt() {
+    if [[ $# -eq 0 ]]; then
+        echo "Usage: bt <target_name>"
+        return 1
+    fi
+    local target_name="$1"
+    bazel test --test_output=streamed --test_timeout=5 --cache_test_results=no "${target_name}"
 }
+
+alias pc="cd \$(fd --type d | fzf)"
+alias pp="cd \$(fd . '/home/wk/repositories/pennybot' --type d | fzf)"

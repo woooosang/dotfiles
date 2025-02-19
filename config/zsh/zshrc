@@ -45,14 +45,14 @@ zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
 # -------------- PATH CONFIG --------------
-export PATH="$PATH:/home/woosangkang/.cargo/bin"
+export PATH="$PATH:$HOME/.cargo/bin"
 export PATH="$PATH:/opt/nvim-linux64/bin"
-export PATH="$PATH:/home/woosangkang/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:/usr/local/go/bin"
-export PATH="$PATH:/home/woosangkang/go/bin"
+export PATH="$PATH:$HOME/go/bin"
 export PATH="$PATH:/snap/bin"
-export PATH="$PATH:/home/woosangkang/.config/emacs/bin"
-export PATH="$PATH:/home/woosangkang/.fzf/bin"
+export PATH="$PATH:$HOME/.config/emacs/bin"
+export PATH="$PATH:$HOME/.fzf/bin"
 
 export PATH="$PATH:/opt/bear/bin"
 
@@ -60,6 +60,7 @@ export GOROOT=/usr/local/go
 export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOROOT:$GOPATH:$GOBIN
+export PATH="$PATH:$HOME/.yarn/bin"
 
 . "$HOME/.cargo/env"
 
@@ -121,3 +122,8 @@ function tfp() {
     terraform plan "$@" --out=plan.plan --var-file="env/${workspace}.tfvars"
 }
 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export KUBECONFIG=~/.kube/config:~/.kube/on_prem

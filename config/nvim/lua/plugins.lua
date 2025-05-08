@@ -19,6 +19,10 @@ return require('packer').startup(function(use)
 	use { 'rebelot/kanagawa.nvim' }
 	use { 'catppuccin/nvim', as = 'catppuccin' }
 	use { 'rose-pine/neovim', as = 'rose-pine'}
+	use {
+		"loctvl842/monokai-pro.nvim",
+		config = function() require("monokai-pro").setup() end
+	}
 	use { 'NLKNguyen/papercolor-theme', as = 'papercolor' }
 	use { 'projekt0n/github-nvim-theme', tag = 'v0.0.7' }
 	use {
@@ -80,34 +84,27 @@ return require('packer').startup(function(use)
     }
 	use { 'fatih/vim-go', run = ':GoUpdateBinaries' }
 
+	-- LSP Support
+	use { 'neovim/nvim-lspconfig' }
 	use {
-		'VonHeikemen/lsp-zero.nvim',
-		branch = 'v2.x',
-		requires = {
-			-- LSP Support
-			{ 'neovim/nvim-lspconfig' }, -- Required
-			{
-				-- Optional
-				'williamboman/mason.nvim',
-				run = function()
-					pcall(vim.cmd, 'MasonUpdate')
-				end,
-			},
-			{ 'williamboman/mason-lspconfig.nvim' }, -- Optional
-
-			-- Autocompletion
-			{ 'hrsh7th/nvim-cmp' }, -- Required
-			{ 'hrsh7th/cmp-nvim-lsp' }, -- Required
-			{ 'hrsh7th/cmp-buffer' }, -- Optional
-			{ 'hrsh7th/cmp-path' }, -- Optional
-			{ 'saadparwaiz1/cmp_luasnip' }, -- Optional
-			{ 'hrsh7th/cmp-nvim-lua' }, -- Optional
-
-			-- Snippets
-			{ 'L3MON4D3/LuaSnip' },    -- Required
-			{ 'rafamadriz/friendly-snippets' }, -- Optional
-		}
+		'williamboman/mason.nvim',
+		run = function()
+			pcall(vim.cmd, 'MasonUpdate')
+		end,
 	}
+	use { 'williamboman/mason-lspconfig.nvim' }
+	
+	-- Autocompletion
+	use { 'hrsh7th/nvim-cmp' }
+	use { 'hrsh7th/cmp-nvim-lsp' }
+	use { 'hrsh7th/cmp-buffer' }
+	use { 'hrsh7th/cmp-path' }
+	use { 'hrsh7th/cmp-cmdline' }
+	
+	-- Snippets
+	use { 'L3MON4D3/LuaSnip' }
+	use { 'saadparwaiz1/cmp_luasnip' }
+	use { 'rafamadriz/friendly-snippets' }
 	use {
 		'folke/todo-comments.nvim',
 		requires = { 'nvim-lua/plenary.nvim' },

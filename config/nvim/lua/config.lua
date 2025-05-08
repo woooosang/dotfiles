@@ -54,7 +54,7 @@ vim.opt.termguicolors = true
 require("catppuccin").setup({
 	transparent_background = true
 })
-vim.cmd("colorscheme catppuccin-latte")
+-- vim.cmd("colorscheme catppuccin-latte")
 
 require("rose-pine").setup({
 	styles = {
@@ -78,8 +78,6 @@ vim.g.mkdp_browser = '/snap/bin/firefox'
 vim.g.mkdp_echo_preview_url = 1
 
 vim.opt.clipboard:append { 'unnamedplus' }
-
--- vim.opt.background = 'light'
 
 vim.g.org_agenda_files = { '~/org/index.org' }
 

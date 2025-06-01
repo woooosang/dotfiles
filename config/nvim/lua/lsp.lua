@@ -7,37 +7,20 @@ function M.setup()
     require("mason").setup()
 
     -- LSP Setup
-    local on_attach = function(_, bufnr)
-        -- Enable completion triggered by <c-x><c-o>
-
-        -- Mappings
-        local bufopts = { noremap = true, silent = true, buffer = bufnr }
-        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-        vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-        vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
-        vim.keymap.set('n', '<leader>wl', function()
-            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-        end, bufopts)
-        vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, bufopts)
-        vim.keymap.set('n', '<leader>cr', vim.lsp.buf.rename, bufopts)
-        vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
-        vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-        vim.keymap.set('n', '<leader>cg', function() vim.lsp.buf.format { async = true } end, bufopts)
-    end
+    -- local on_attach = function(_, bufnr)
+    --     -- Enable completion triggered by <c-x><c-o>
+    --     setup_lsp_keybindings(bufnr)
+    -- end
 
     -- Set up nvim-cmp
     M.setup_cmp()
 
     -- Set up lspconfig
-    local capabilities = require('cmp_nvim_lsp').default_capabilities()
+    -- local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-    require("lspconfig").pyright.setup({
-        on_attach = on_attach,
-        capabilities = capabilities,
+    vim.lsp.config('pyright', {
+        cmd = { 'pyright-langserver', '--stdio' },
+        filetypes = { 'python' },
         settings = {
             python = {
                 pythonPath = '/home/wk/repositories/pennybot/.venv/bin/python3',
@@ -54,29 +37,30 @@ function M.setup()
             },
         },
     })
-    require("lspconfig").gopls.setup({
-        on_attach = on_attach,
-        capabilities = capabilities,
+    vim.lsp.config('gopls', {
+        cmd = { 'gopls' },
+        filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
         settings = {
             gopls = {
                 directoryFilters = {
                     "-bazel-bin",
                     "-bazel-out",
                     "-bazel-testlogs",
-                    "-bazel-mypkg",
+                    "-bazel-pennybot",
+                    "-bazel_deps",
                 },
             },
         },
     })
 
-    require("lspconfig").starpls.setup({
-        on_attach = on_attach,
-        capabilities = capabilities,
+    vim.lsp.config('starpls', {
+        cmd = { 'starpls' },
+        filetypes = { 'bzl' },
     })
 
-    require("lspconfig").lua_ls.setup({
-        on_attach = on_attach,
-        capabilities = capabilities,
+    vim.lsp.config('lua_ls', {
+        cmd = { 'lua-language-server' },
+        filetypes = { 'lua' },
         settings = {
             Lua = {
                 runtime = {
@@ -93,31 +77,33 @@ function M.setup()
         },
     })
 
-    -- Setup mason-lspconfig
-    require('mason-lspconfig').setup({
-        automatic_enable = true,
-        ensure_installed = {
-            "lua_ls",
-            "pyright",
-            "gopls",
-        },
+    vim.lsp.config('clangd', {
+        cmd = { 'clangd' },
+        filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
     })
+
+    -- Enable LSP servers
+    vim.lsp.enable('pyright')
+    vim.lsp.enable('gopls')
+    vim.lsp.enable('starpls')
+    vim.lsp.enable('lua_ls')
+    vim.lsp.enable('clangd')
 end
 
 -- Completion setup function
 function M.setup_cmp()
     local cmp = require('cmp')
-    local luasnip = require('luasnip')
+    -- local luasnip = require('luasnip')
 
     -- Load snippets
-    require("luasnip.loaders.from_vscode").lazy_load()
+    -- require("luasnip.loaders.from_vscode").lazy_load()
 
     cmp.setup({
-        snippet = {
-            expand = function(args)
-                luasnip.lsp_expand(args.body)
-            end,
-        },
+        -- snippet = {
+        --     expand = function(args)
+        --         luasnip.lsp_expand(args.body)
+        --     end,
+        -- },
         mapping = {
             ['<C-d>'] = cmp.mapping.scroll_docs(-4),
             ['<C-u>'] = cmp.mapping.scroll_docs(4),
@@ -126,8 +112,8 @@ function M.setup_cmp()
             ['<Down>'] = cmp.mapping(function(fallback)
                 if cmp.visible() then
                     cmp.select_next_item()
-                elseif luasnip.expand_or_jumpable() then
-                    luasnip.expand_or_jump()
+                -- elseif luasnip.expand_or_jumpable() then
+                --     luasnip.expand_or_jump()
                 else
                     fallback()
                 end
@@ -135,8 +121,8 @@ function M.setup_cmp()
             ['<Up>'] = cmp.mapping(function(fallback)
                 if cmp.visible() then
                     cmp.select_prev_item()
-                elseif luasnip.jumpable(-1) then
-                    luasnip.jump(-1)
+                -- elseif luasnip.jumpable(-1) then
+                --     luasnip.jump(-1)
                 else
                     fallback()
                 end
@@ -147,7 +133,7 @@ function M.setup_cmp()
         sources = {
             { name = 'nvim_lsp' },
             { name = 'path', keyword_length = 1},
-            { name = 'luasnip', keyword_length = 2},
+            -- { name = 'luasnip', keyword_length = 2},
             { name = 'buffer', keyword_length = 3},
         },
     })

@@ -92,7 +92,6 @@ return require('packer').startup(function(use)
 			pcall(vim.cmd, 'MasonUpdate')
 		end,
 	}
-	use { 'williamboman/mason-lspconfig.nvim' }
 
 	-- Autocompletion
 	use { 'hrsh7th/nvim-cmp' }
@@ -102,9 +101,9 @@ return require('packer').startup(function(use)
 	use { 'hrsh7th/cmp-cmdline' }
 
 	-- Snippets
-	use { 'L3MON4D3/LuaSnip' }
-	use { 'saadparwaiz1/cmp_luasnip' }
-	use { 'rafamadriz/friendly-snippets' }
+	-- use { 'L3MON4D3/LuaSnip' }
+	-- use { 'saadparwaiz1/cmp_luasnip' }
+	-- use { 'rafamadriz/friendly-snippets' }
 	use {
 		'folke/todo-comments.nvim',
 		requires = { 'nvim-lua/plenary.nvim' },

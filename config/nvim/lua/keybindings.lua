@@ -20,8 +20,28 @@ vim.keymap.set("n", "<leader>fg", ":lua require('telescope').extensions.live_gre
 vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
 
 -- LSP
-vim.keymap.set('n', 'nl', vim.diagnostic.goto_prev)
-vim.keymap.set('n', 'Nl', vim.diagnostic.goto_next)
+vim.keymap.set('n', 'nl', function() vim.diagnostic.jump({count=1, float=true}) end)
+vim.keymap.set('n', 'Nl', function() vim.diagnostic.jump({count=-1, float=true}) end)
+
+-- LSP keybindings for buffers with LSP attached
+function setup_lsp_keybindings(bufnr)
+    local bufopts = { noremap = true, silent = true, buffer = bufnr }
+    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+    vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+    vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+    vim.keymap.set('n', '<leader>wl', function()
+        print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, bufopts)
+    vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, bufopts)
+    vim.keymap.set('n', '<leader>cr', vim.lsp.buf.rename, bufopts)
+    vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+    vim.keymap.set('n', '<leader>cg', function() vim.lsp.buf.format { async = true } end, bufopts)
+end
 
 --Floaterm
 vim.g.floaterm_keymap_new = '<leader>ft'

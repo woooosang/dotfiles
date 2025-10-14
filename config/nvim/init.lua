@@ -5,7 +5,6 @@ require('keybindings')
 -- Initialize LSP and completion
 require('lsp').setup()
 
--- Treesitter configuration
 require('nvim-treesitter.configs').setup {
     ensure_installed = {
         "bash",
@@ -14,8 +13,6 @@ require('nvim-treesitter.configs').setup {
         "python",
     },
     highlight = { enable = true },
-    indent = { enable = true }
+    indent = { enable = true },
 }
 
--- Additional UI setup
-require('lualine').setup()

@@ -77,8 +77,3 @@ vim.opt.clipboard:append { 'unnamedplus' }
 -- Initialize language-specific settings
 require('languages').setup()
 
-require("codecompanion").setup({
-  opts = {
-    log_level = "DEBUG", -- or "TRACE"
-  }
-})

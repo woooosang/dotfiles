@@ -60,6 +60,7 @@ function M.setup()
                 },
                 diagnostics = {
                     globals = { 'vim' },
+                    disable = { 'missing-fields' },
                 },
                 workspace = {
                     library = vim.api.nvim_get_runtime_file("", true),
@@ -90,6 +91,7 @@ function M.setup()
         'jsonnet-language-server',
     })
 end
+
 
 
 return M

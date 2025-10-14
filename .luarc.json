@@ -1,0 +1,6 @@
+{
+    "diagnostics.globals": [
+        "vim",
+        "setup_lsp_keybindings"
+    ]
+}

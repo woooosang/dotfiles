@@ -1,63 +1,66 @@
--- bootstrapping
-local ensure_packer = function()
-	local fn = vim.fn
-	local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-	if fn.empty(fn.glob(install_path)) > 0 then
-		fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
-		vim.cmd [[packadd packer.nvim]]
-		return true
-	end
-	return false
+-- Bootstrap lazy.nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+  if vim.v.shell_error ~= 0 then
+    vim.api.nvim_echo({
+      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+      { out, "WarningMsg" },
+      { "\nPress any key to exit..." },
+    }, true, {})
+    vim.fn.getchar()
+    os.exit(1)
+  end
 end
+vim.opt.rtp:prepend(lazypath)
 
-local packer_bootstrap = ensure_packer()
-
-return require('packer').startup(function(use)
-	use 'wbthomason/packer.nvim'
+return require("lazy").setup({
 	-- Visuals
-	use { 'andymass/vim-matchup', event = 'VimEnter' }
-	use { 'rebelot/kanagawa.nvim' }
-	use { 'catppuccin/nvim', as = 'catppuccin' }
-	use { 'rose-pine/neovim', as = 'rose-pine'}
-	use {
+	{ 'andymass/vim-matchup', event = 'VimEnter' },
+	{ 'rebelot/kanagawa.nvim' },
+	{ 'catppuccin/nvim', name = 'catppuccin' },
+	{ 'rose-pine/neovim', name = 'rose-pine' },
+	{
 		"loctvl842/monokai-pro.nvim",
 		config = function() require("monokai-pro").setup() end
-	}
-	use { 'NLKNguyen/papercolor-theme', as = 'papercolor' }
-	use { 'projekt0n/github-nvim-theme', tag = 'v0.0.7' }
-	use {
+	},
+	{ 'NLKNguyen/papercolor-theme', name = 'papercolor' },
+	{ 'projekt0n/github-nvim-theme', tag = 'v0.0.7' },
+	{
 		'nvim-lualine/lualine.nvim',
-		requires = { 'nvim-tree/nvim-web-devicons', opt = true },
+		dependencies = { 'nvim-tree/nvim-web-devicons' },
 		config = function() require('lualine').setup() end
-	}
+	},
 
 	-- Convenience plugins
-	use({
+	{
 		"iamcco/markdown-preview.nvim",
-		run = function() vim.fn["mkdp#util#install"]() end,
-	})
-	use 'tpope/vim-commentary'
-	use 'f-person/git-blame.nvim'
-	use 'jreybert/vimagit'
+		build = function() vim.fn["mkdp#util#install"]() end,
+	},
+	'tpope/vim-commentary',
+	'f-person/git-blame.nvim',
+	'jreybert/vimagit',
 
-	use {
-		'nvim-telescope/telescope.nvim', tag = '0.1.6',
-		requires = {
-			{ 'nvim-lua/plenary.nvim' },
-			{ "nvim-telescope/telescope-live-grep-args.nvim" },
+	{
+		'nvim-telescope/telescope.nvim',
+		tag = '0.1.6',
+		dependencies = {
+			'nvim-lua/plenary.nvim',
+			"nvim-telescope/telescope-live-grep-args.nvim",
 		},
 		config = function()
 			require("telescope").load_extension("live_grep_args")
 		end
-	}
-	use {
+	},
+	{
 		"windwp/nvim-autopairs",
 		config = function() require("nvim-autopairs").setup {} end
-	}
-	use 'ntpeters/vim-better-whitespace'
+	},
+	'ntpeters/vim-better-whitespace',
 
 	-- File explorer (netrw substitute)
-	use {
+	{
 		'stevearc/oil.nvim',
 		commit = 'fcca212c',
 		config = function()
@@ -65,38 +68,40 @@ return require('packer').startup(function(use)
 				default_file_explorer = true,
 			})
 		end
-	}
+	},
 
-	use 'nvim-tree/nvim-web-devicons'
+	'nvim-tree/nvim-web-devicons',
 
 	-- Terminal
-	use 'voldikss/vim-floaterm'
-	use 'christoomey/vim-tmux-navigator'
+	'voldikss/vim-floaterm',
+	'christoomey/vim-tmux-navigator',
 
 	-- Syntax highlighting & LSP
-	use { 'nvim-treesitter/nvim-treesitter-context' }
-	use {
+	{
         'nvim-treesitter/nvim-treesitter',
-        run = function()
-            local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
-            ts_update()
+        build = function()
+            require('nvim-treesitter.install').update({ with_sync = true })()
         end,
-    }
-	-- use { 'fatih/vim-go', run = ':GoUpdateBinaries' }
+    },
+	{
+        'nvim-treesitter/nvim-treesitter-context',
+        dependencies = { 'nvim-treesitter/nvim-treesitter' }
+    },
 
 	-- LSP Support
-	use { 'neovim/nvim-lspconfig' }
-	use {
+	{ 'neovim/nvim-lspconfig' },
+	{
 		'williamboman/mason.nvim',
-		run = function()
+		build = function()
 			pcall(vim.cmd, 'MasonUpdate')
 		end,
-	}
+	},
 
 	-- Autocompletion
-	use {
+	{
 		'saghen/blink.cmp',
-		tag = 'v1.3.1',
+		version = 'v1.3.1',
+		build = 'cargo build --release',
 		config = function()
 			require('blink.cmp').setup({
 				keymap = { preset = 'default' },
@@ -111,34 +116,35 @@ return require('packer').startup(function(use)
                 },
 			})
 		end
-	}
+	},
 
-	-- Snippets
-	-- use { 'L3MON4D3/LuaSnip' }
-	-- use { 'saadparwaiz1/cmp_luasnip' }
-	-- use { 'rafamadriz/friendly-snippets' }
-	use {
+	{
 		'folke/todo-comments.nvim',
-		requires = { 'nvim-lua/plenary.nvim' },
+		dependencies = { 'nvim-lua/plenary.nvim' },
 		config = function() require('todo-comments').setup() end
-	}
-	use { 'folke/zen-mode.nvim' }
-	use {
+	},
+	{ 'folke/zen-mode.nvim' },
+	{
 		'jceb/vim-orgmode',
-		requires = {
+		dependencies = {
 			'tpope/vim-speeddating',
 			'inkarkat/vim-SyntaxRange',
 		},
-	}
-    use {
+	},
+    {
         'olimorris/codecompanion.nvim',
         config = function()
+            local secrets = require("secrets")
             require("codecompanion").setup({
+                opts = {
+                    log_level = "DEBUG", -- or "TRACE"
+                },
                 adapters = {
                     acp = {
                         claude_code = function()
                             return require("codecompanion.adapters").extend("claude_code", {
                                 env = {
+                                    CLAUDE_CODE_OAUTH_TOKEN = secrets.CLAUDE_CODE_OAUTH_TOKEN,
                                 },
                             })
                         end,
@@ -157,15 +163,10 @@ return require('packer').startup(function(use)
                 },
             })
         end,
-        requires = {
+        dependencies = {
             'nvim-lua/plenary.nvim',
             'nvim-treesitter/nvim-treesitter',
         },
     }
+})
 
-	-- Automatically set up your configuration after cloning packer.nvim
-	-- Put this at the end after all plugins
-	if packer_bootstrap then
-		require('packer').sync()
-	end
-end)

@@ -16,12 +16,15 @@ vim.keymap.set('n', '<leader>sb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 vim.keymap.set("n", "<leader>fg", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
 
---Oil (vinegar-like behavior)
+-- Oil (vinegar-like behavior)
 vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
 
 -- LSP
 vim.keymap.set('n', 'nl', function() vim.diagnostic.jump({count=1, float=true}) end)
 vim.keymap.set('n', 'Nl', function() vim.diagnostic.jump({count=-1, float=true}) end)
+
+-- CodeCompanion
+vim.keymap.set('n', '<leader>cc', ":CodeCompanionChat<CR>", { noremap = true })
 
 local M = {}
 
@@ -45,7 +48,7 @@ function M.setup_lsp_keybindings(bufnr)
     vim.keymap.set('n', '<leader>cg', function() vim.lsp.buf.format { async = true } end, bufopts)
 end
 
---Floaterm
+-- Floaterm
 vim.g.floaterm_keymap_new = '<leader>ft'
 vim.g.floaterm_keymap_prev = '<F8>'
 vim.g.floaterm_keymap_next = '<F9>'

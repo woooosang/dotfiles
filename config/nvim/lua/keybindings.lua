@@ -23,8 +23,10 @@ vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" }
 vim.keymap.set('n', 'nl', function() vim.diagnostic.jump({count=1, float=true}) end)
 vim.keymap.set('n', 'Nl', function() vim.diagnostic.jump({count=-1, float=true}) end)
 
+local M = {}
+
 -- LSP keybindings for buffers with LSP attached
-function setup_lsp_keybindings(bufnr)
+function M.setup_lsp_keybindings(bufnr)
     local bufopts = { noremap = true, silent = true, buffer = bufnr }
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
@@ -48,3 +50,5 @@ vim.g.floaterm_keymap_new = '<leader>ft'
 vim.g.floaterm_keymap_prev = '<F8>'
 vim.g.floaterm_keymap_next = '<F9>'
 vim.g.floaterm_keymap_toggle = '<F7>'
+
+return M

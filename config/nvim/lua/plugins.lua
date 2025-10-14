@@ -82,7 +82,7 @@ return require('packer').startup(function(use)
             ts_update()
         end,
     }
-	use { 'fatih/vim-go', run = ':GoUpdateBinaries' }
+	-- use { 'fatih/vim-go', run = ':GoUpdateBinaries' }
 
 	-- LSP Support
 	use { 'neovim/nvim-lspconfig' }
@@ -94,11 +94,24 @@ return require('packer').startup(function(use)
 	}
 
 	-- Autocompletion
-	use { 'hrsh7th/nvim-cmp' }
-	use { 'hrsh7th/cmp-nvim-lsp' }
-	use { 'hrsh7th/cmp-buffer' }
-	use { 'hrsh7th/cmp-path' }
-	use { 'hrsh7th/cmp-cmdline' }
+	use {
+		'saghen/blink.cmp',
+		tag = 'v1.3.1',
+		config = function()
+			require('blink.cmp').setup({
+				keymap = { preset = 'default' },
+				appearance = {
+					nerd_font_variant = 'mono'
+				},
+				sources = {
+					default = { 'lsp', 'path', 'buffer' },
+				},
+                completion = {
+                    documentation = { auto_show = true },
+                },
+			})
+		end
+	}
 
 	-- Snippets
 	-- use { 'L3MON4D3/LuaSnip' }
@@ -117,6 +130,38 @@ return require('packer').startup(function(use)
 			'inkarkat/vim-SyntaxRange',
 		},
 	}
+    use {
+        'olimorris/codecompanion.nvim',
+        config = function()
+            require("codecompanion").setup({
+                adapters = {
+                    acp = {
+                        claude_code = function()
+                            return require("codecompanion.adapters").extend("claude_code", {
+                                env = {
+                                },
+                            })
+                        end,
+                    },
+                },
+                strategies = {
+                    chat = {
+                        adapter = "claude_code"
+                    },
+                    inline = {
+                        adapter = "claude_code"
+                    },
+                    cmd = {
+                        adapter = "claude_code"
+                    }
+                },
+            })
+        end,
+        requires = {
+            'nvim-lua/plenary.nvim',
+            'nvim-treesitter/nvim-treesitter',
+        },
+    }
 
 	-- Automatically set up your configuration after cloning packer.nvim
 	-- Put this at the end after all plugins

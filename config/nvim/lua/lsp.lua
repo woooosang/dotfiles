@@ -7,17 +7,6 @@ function M.setup()
     require("mason").setup()
 
     -- LSP Setup
-    -- local on_attach = function(_, bufnr)
-    --     -- Enable completion triggered by <c-x><c-o>
-    --     setup_lsp_keybindings(bufnr)
-    -- end
-
-    -- Set up nvim-cmp
-    M.setup_cmp()
-
-    -- Set up lspconfig
-    -- local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
     vim.lsp.config('pyright', {
         cmd = { 'pyright-langserver', '--stdio' },
         filetypes = { 'python' },
@@ -40,6 +29,9 @@ function M.setup()
     vim.lsp.config('gopls', {
         cmd = { 'gopls' },
         filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
+        on_attach = function(client, bufnr)
+            require('keybindings').setup_lsp_keybindings(bufnr)
+        end,
         settings = {
             gopls = {
                 directoryFilters = {
@@ -82,61 +74,22 @@ function M.setup()
         filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
     })
 
+    vim.lsp.config('jsonnet-language-server', {
+        cmd = { 'jsonnet-language-server' },
+        filetypes = { "jsonnet", "libsonnet", "libjsonnet" },
+    })
+
     -- Enable LSP servers
-    vim.lsp.enable('pyright')
-    vim.lsp.enable('gopls')
-    vim.lsp.enable('starpls')
-    vim.lsp.enable('lua_ls')
-    vim.lsp.enable('clangd')
-end
-
--- Completion setup function
-function M.setup_cmp()
-    local cmp = require('cmp')
-    -- local luasnip = require('luasnip')
-
-    -- Load snippets
-    -- require("luasnip.loaders.from_vscode").lazy_load()
-
-    cmp.setup({
-        -- snippet = {
-        --     expand = function(args)
-        --         luasnip.lsp_expand(args.body)
-        --     end,
-        -- },
-        mapping = {
-            ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-            ['<C-u>'] = cmp.mapping.scroll_docs(4),
-            ['<C-Space>'] = cmp.mapping.complete(),
-            ['<CR>'] = cmp.mapping.confirm({ select = false }),
-            ['<Down>'] = cmp.mapping(function(fallback)
-                if cmp.visible() then
-                    cmp.select_next_item()
-                -- elseif luasnip.expand_or_jumpable() then
-                --     luasnip.expand_or_jump()
-                else
-                    fallback()
-                end
-            end, { 'i', 's' }),
-            ['<Up>'] = cmp.mapping(function(fallback)
-                if cmp.visible() then
-                    cmp.select_prev_item()
-                -- elseif luasnip.jumpable(-1) then
-                --     luasnip.jump(-1)
-                else
-                    fallback()
-                end
-            end, { 'i', 's' }),
-            ['<C-j>'] = cmp.mapping.select_next_item(),
-            ['<C-k>'] = cmp.mapping.select_prev_item(),
-        },
-        sources = {
-            { name = 'nvim_lsp' },
-            { name = 'path', keyword_length = 1},
-            -- { name = 'luasnip', keyword_length = 2},
-            { name = 'buffer', keyword_length = 3},
-        },
+    vim.lsp.enable({
+        'pyright',
+        'gopls',
+        'starpls',
+        'lua_ls',
+        'clangd',
+        'jdtls',
+        'jsonnet-language-server',
     })
 end
+
 
 return M

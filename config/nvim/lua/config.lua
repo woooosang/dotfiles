@@ -69,7 +69,7 @@ vim.cmd("colorscheme rose-pine-moon")
 vim.g.gitblame_ignored_filetypes = {'oil'}
 
 vim.g.mkdp_theme = 'light'
-vim.g.mkdp_browser = '/snap/bin/firefox'
+vim.g.mkdp_browser = '/usr/bin/google-chrome'
 vim.g.mkdp_echo_preview_url = 1
 
 vim.opt.clipboard:append { 'unnamedplus' }

@@ -85,10 +85,10 @@ function M.setup()
         'pyright',
         'gopls',
         'starpls',
-        'lua_ls',
-        'clangd',
-        'jdtls',
-        'jsonnet-language-server',
+        -- 'lua_ls',
+        -- 'clangd',
+        -- 'jdtls',
+        -- 'jsonnet-language-server',
     })
 end
 

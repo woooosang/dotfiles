@@ -104,7 +104,10 @@ return require("lazy").setup({
 		build = 'cargo build --release',
 		config = function()
 			require('blink.cmp').setup({
-				keymap = { preset = 'default' },
+				keymap = {
+					preset = 'default',
+					['<CR>'] = { 'accept', 'fallback' },
+				},
 				appearance = {
 					nerd_font_variant = 'mono'
 				},
